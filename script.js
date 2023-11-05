@@ -15,15 +15,85 @@ const myLibrary = [
   new Book('The Dalek Handbook', 'Steve Tribe', 160, true, './images/Dalek_Handbook.jpg'),
   new Book('The Writer\'s Tale', 'Russell T Davies', 736, true, './images/Writers_Tale.jpg'),
   new Book('The Doctor\'s Lives and Times', 'James Goss', 256, false, './images/Doctors_Lives_and_Times.jpg'),
-  new Book('The Legends of River Song', 'Jenny T. Colgan', 224, true, './images/Legends_of_River_Song.jpg'),
+  new Book('The Legends of River Song', 'Jenny T. Colgan', 224, true, './images/River-Song.jpg'),
   new Book('The Secret Lives of Monsters', 'Justin Richards', 224, true, './images/Secret_Lives_of_Monsters.jpg'),
   new Book('The Official Cookbook', 'Joanna Farrow', 160, false, './images/Official_Cookbook.jpg'),
   new Book('The Writer\'s Guide', 'Graeme Burk', 256, true, './images/Writers_Guide.jpg')
 ];
 
+function displayBooks(library) {
+  const bookList = document.querySelector('.book-list');
+  bookList.innerHTML = '';
+
+  library.forEach((book, index) => {
+    const listItem = initializeBookCard(book, index);
+    listItem.setAttribute('data-index-number', index);
+    bookList.appendChild(listItem);
+  });
+}
+displayBooks(myLibrary);
+
+function initializeBookCard(book, index) {
+
+  function createImage(imageUrl) {
+    const image = document.createElement('img');
+    image.classList.add('card__image');
+    image.src = imageUrl;
+    
+    image.onerror = function() {
+      this.src = './images/NOT_AVAILABLE.png';
+    };
+    return image;
+  };
+
+  function createTitle(titleText) {
+    const title = document.createElement('h4');
+    title.classList.add('card__title');
+    title.textContent = titleText;
+    return title;
+  };
+
+  function createDescription(book) {
+    const description = document.createElement('div');
+    description.classList.add('card__description');
+    description.textContent = `by author ${book.author}, pages ${book.pages}, ${book.read ? 'Read' : 'Not read'}`;
+    return description;
+  };
+
+  function createDeleteButton(index) {
+    const deleteButton = document.createElement('button');
+    deleteButton.classList.add('card__delete-button');
+    deleteButton.textContent = 'Delete';
+    
+    deleteButton.addEventListener('click', () => {
+      myLibrary.splice(index , 1);
+      displayBooks(myLibrary);
+    });
+    return deleteButton;
+  };
+
+  const listItem = document.createElement('li');
+  listItem.classList.add('book-list__card');
+
+  const image = createImage(book.image);
+  listItem.appendChild(image);
+
+  const title = createTitle(book.title);
+  listItem.appendChild(title);
+
+  const description = createDescription(book);
+  listItem.appendChild(description);
+
+  const deleteButton = createDeleteButton(index);
+  listItem.appendChild(deleteButton);
+
+  return listItem;
+}
+
 function initializeDialog() {
   const modal = document.querySelector('.modal');
   const addButton = document.querySelector('.nav__add-book');
+  const titleInput = document.getElementById('title');
   const cancelButton = document.querySelector('.modal__cancel-button');
   const submitButton = document.querySelector('.modal__submit-button');
 
@@ -59,49 +129,11 @@ function initializeDialog() {
 
     const bookList = document.querySelector('.book-list');
     bookList.innerHTML = '';
-    
+
     displayBooks(myLibrary);
   });
 }
 initializeDialog();
-
-function createBookCard(book) {
-  const listItem = document.createElement('li');
-  listItem.classList.add('book-list__card');
-
-  const image = document.createElement('img');
-  image.classList.add('card__image');
-  image.src = book.image;
-  image.onerror = function() {
-    this.src = './images/NOT_AVAILABLE.png';
-  };
-  listItem.appendChild(image);
-
-  const title = document.createElement('h4');
-  title.classList.add('card__title');
-  title.textContent = book.title;
-  listItem.appendChild(title);
-
-  const description = document.createElement('div');
-  description.classList.add('card__description');
-  description.textContent = `by author ${book.author}, pages ${book.pages}, ${book.read ? 'Read' : 'Not read'}`;
-  listItem.appendChild(description);
-
-  return listItem;
-}
-
-function displayBooks(library) {
-  const bookList = document.querySelector('.book-list');
-  let index = 0;
-
-  library.forEach(book => {
-    index ++;
-    const listItem = createBookCard(book);
-    listItem.setAttribute('data-index-number', index);
-    bookList.appendChild(listItem);
-  });
-}
-displayBooks(myLibrary);
 
 function validateNumericInput(event) {
   const input = event.target;

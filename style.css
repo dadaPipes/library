@@ -26,8 +26,8 @@
 }
 
 .book-list__card {
-  width: 50%;
-  margin: 100px auto;
+  width: 25%;
+  margin: 10px auto;
   border: solid black 3px;
 }
 
