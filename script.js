@@ -8,13 +8,13 @@ Book.generateUniqueId = (function() {
 
 
 function Book(title, author, pages, read, imagePath, imageAlt) {
-  this.id = Book.generateUniqueId();
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read;
+  this.id        = Book.generateUniqueId();
+  this.title     = title;
+  this.author    = author;
+  this.pages     = pages;
+  this.read      = read;
   this.imagePath = imagePath;
-  this.imageAlt = imageAlt;
+  this.imageAlt  = imageAlt;
 }
 
 const myLibrary = [
@@ -39,12 +39,14 @@ function displayBooks(library) {
   library.forEach((book, index) => {
     const listItem = createBookCard(book, index);
     bookList.appendChild(listItem);
+    /* console.log(book); */
   });
 }
 displayBooks(myLibrary);
+/* console.log(myLibrary); */
 
 function createBookCard(book) {
-
+  /* console.log(book); */
   function createImage(book) {
     const image = document.createElement('img');
     image.classList.add('card__image');
@@ -116,9 +118,9 @@ function createBookCard(book) {
 
 /* Add Book */
 function initializeDialog() {
-  const modal = document.querySelector('.modal');
-  const addButton = document.querySelector('.nav__add-book');
-  const titleInput = document.getElementById('title');
+  const modal        = document.querySelector('.modal');
+  const titleInput   = document.getElementById('title');
+  const addButton    = document.querySelector('.nav__add-book');
   const cancelButton = document.querySelector('.modal__cancel-button');
   const submitButton = document.querySelector('.modal__submit-button');
 
@@ -131,27 +133,38 @@ function initializeDialog() {
     modal.classList.remove('modal--visible');
   });
 
-  submitButton.addEventListener('click', () => {
+  submitButton.addEventListener('click', (event) => {
+    event.preventDefault();
 
-    const titleInput = document.getElementById('title');
-    const authorInput = document.getElementById('author');
-    const pagesInput = document.getElementById('pages');
-    const readInput = document.getElementById('read');
-    const imageInput = document.getElementById('gallery-img');
+    const titleInput     = document.getElementById('title');
+    const authorInput    = document.getElementById('author');
+    const pagesInput     = document.getElementById('pages');
+    const readInput      = document.getElementById('read');
+    const imageInput     = document.getElementById('img');
+    const imageName      = document.getElementById('img-name');
   
-    const title = titleInput.value;
-    const author = authorInput.value;
-    const pages = pagesInput.value;
-    const read = readInput.checked;
-    const image = imageInput.value;
+    const title          = titleInput.value;
+    const author         = authorInput.value;
+    const pages          = pagesInput.value;
+    const read           = readInput.checked;
+    const image          = imageInput.value;
+    const imageAlt       = imageName.value;
   
-    const newBook = new Book(title, author, pages, read, image);
+    console.log(`Title: ${title}`);
+    console.log(`Author: ${author}`);
+    console.log(`Pages: ${pages}`);
+    console.log(`Read: ${read}`);
+    console.log(`Image: ${image}`);
+    console.log(`Image Alt: ${imageAlt}`);
+
+    const newBook = new Book(title, author, pages, read, image, imageAlt);
+    console.log(newBook);
     myLibrary.unshift(newBook);
 
     document.querySelector('.modal__form').reset();
     modal.classList.remove('modal--visible');
 
-    const bookList = document.querySelector('.book-list');
+    const bookList     = document.querySelector('.book-list');
     bookList.innerHTML = '';
 
     displayBooks(myLibrary);
