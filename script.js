@@ -37,6 +37,53 @@ const myLibrary = [
   new Book('The Writer\'s Guide',           'Graeme Burk',      'Summary for The Writer\'s Guide',           256, true,  './images/Writers_Guide.jpg', 'Book cover for: The Writer\'s Guide')
 ];
 
+function createAndAppend(parent, elementType, className, textContent) {
+  const element = document.createElement(elementType);
+  if (className) {
+    element.classList.add(className);
+  }
+  if (textContent) {
+    element.textContent = textContent;
+  }
+  parent.appendChild(element);
+  return element;
+}
+
+function createAndAppendImage(parent, className, src, alt, onError) {
+  const element = document.createElement('img');
+  if (className) {
+    element.classList.add(className);
+  }
+  if (src) {
+    element.src = src;
+  }
+  if (alt) {
+    element.alt = alt;
+  }
+  if (onError) {
+    element.onerror = function() {
+      this.src = onError;
+    };
+  }
+  parent.appendChild(element);
+  return element;
+}
+
+function createAndAppendButton(parent, className, textContent, onClick) {
+  const button = document.createElement('button');
+  if (className) {
+    button.classList.add(className);
+  }
+  if (textContent) {
+    button.textContent = textContent;
+  }
+  if (onClick) {
+    button.addEventListener('click', onClick);
+  }
+  parent.appendChild(button);
+  return button;
+}
+
 function displayBooks(library) {
   const bookList = document.querySelector('.book-list');
   bookList.innerHTML = '';
@@ -44,109 +91,35 @@ function displayBooks(library) {
   library.forEach((book, index) => {
     const listItem = createBookCard(book, index);
     bookList.appendChild(listItem);
-    /* console.log(book); */
   });
 }
-displayBooks(myLibrary);
-/* console.log(myLibrary); */
 
 function createBookCard(book) {
-  /* console.log(book); */
-  function createImage(book) {
-    const image = document.createElement('img');
-    image.classList.add('card__image');
-    image.src = book.imagePath;
-    image.alt = book.imageAlt;
-    
-    image.onerror = function() {
-      this.src = './images/NOT_AVAILABLE.png';
-    };
-    return image;
-  };
-
-  function createTitle(book) {
-    const title = document.createElement('h4');
-    title.classList.add('card__title');
-    title.textContent = book.title;
-    return title;
-  };
-
-  function createAuthor(book) {
-    const author = document.createElement('p');
-    author.classList.add('card__author');
-    author.textContent = book.author;
-    return author;
-  }
-
-  function createSummary(book) {
-    const summary = document.createElement('p');
-    summary.classList.add('card__summary');
-    summary.textcontent = book.summary;
-    return summary;
-  }
-
-  function createPages(book) {
-    const pages = document.createElement('p');
-    pages.classList.add('card__pages');
-  }
-
-  function createDeleteButton(book) {
-    const deleteButton = document.createElement('button');
-    deleteButton.classList.add('card__delete-button');
-    deleteButton.textContent = 'Delete';
-  
-    deleteButton.addEventListener('click', () => {
-      const index = myLibrary.findIndex(bookItem => {
-        return bookItem.id === book.id;
-      });
-  
-      if (index !== -1) {
-        myLibrary.splice(index, 1);
-        displayBooks(myLibrary);
-      }
-    });
-  
-    return deleteButton;
-  }
-
-  function createToggleButton(book) {
-    const toggleButton = document.createElement('button');
-    toggleButton.classList.add('card__toggle-button');
-    toggleButton.textContent = book.readStatus ? 'Read' : 'Unread';
-  
-    toggleButton.addEventListener('click', () => {
-      book.toggleReadStatus();
-      toggleButton.textContent = book.readStatus ? 'Read' : 'Unread';
-    });
-    return toggleButton;
-  };
-
   const listItem = document.createElement('li');
   listItem.classList.add('book-list__card');
 
-  const image = createImage(book);
-  listItem.appendChild(image);
+  createAndAppendImage(listItem, 'card__image',        book.imagePath, book.alt, './images/NOT_AVAILABLE.png');
+  createAndAppend     (listItem, 'h4', 'card__title',  book.title);
+  createAndAppend     (listItem, 'p', 'card__element', book.author);
+  createAndAppend     (listItem, 'p', 'card__element', book.summary);
 
-  const title = createTitle(book);
-  listItem.appendChild(title);
+  createAndAppendButton(listItem, 'card__delete-button', 'Delete', () => {
+    const index = myLibrary.findIndex(bookItem => bookItem.id === book.id);
+    if (index !== -1) {
+      myLibrary.splice(index, 1);
+      displayBooks(myLibrary);
+    }
+  });
 
-  const author = createAuthor(book);
-  listItem.appendChild(author);
-
-  const summary = createSummary(book);
-  listItem.appendChild(summary);
-
-  /* const description = createDescription(book);
-  listItem.appendChild(description); */
-
-  const deleteButton = createDeleteButton(book);
-  listItem.appendChild(deleteButton);
-
-  const toggleButton = createToggleButton(book);
-  listItem.appendChild(toggleButton);
+  const toggleButton = createAndAppendButton(listItem, 'card__toggle-button', book.readStatus ? 'Read' : 'Unread', () => {
+    book.toggleReadStatus();
+    toggleButton.textContent = book.readStatus ? 'Read' : 'Unread';
+  });
 
   return listItem;
 }
+
+displayBooks(myLibrary);
 
 /* Add Book */
 function initializeDialog() {
