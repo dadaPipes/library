@@ -7,15 +7,19 @@ Book.generateUniqueId = (function() {
 })();
 
 
-function Book(title, author, pages, read, imagePath, imageAlt) {
-  this.id        = Book.generateUniqueId();
-  this.title     = title;
-  this.author    = author;
-  this.pages     = pages;
-  this.read      = read;
-  this.imagePath = imagePath;
-  this.imageAlt  = imageAlt;
+function Book(title, author, pages, readStatus, imagePath, imageAlt) {
+  this.id         = Book.generateUniqueId();
+  this.title      = title;
+  this.author     = author;
+  this.pages      = pages;
+  this.readStatus = readStatus;
+  this.imagePath  = imagePath;
+  this.imageAlt   = imageAlt;
 }
+
+Book.prototype.toggleReadStatus = function() {
+  this.readStatus = !this.readStatus;
+};
 
 const myLibrary = [
   new Book('The Silent Stars Go By',        'Dan Abnett',       256, true,  './images/Silent_Stars_Go_By.jpg', 'Book cover for: The Silent Stars Go By'),
@@ -69,7 +73,7 @@ function createBookCard(book) {
   function createDescription(book) {
     const description = document.createElement('div');
     description.classList.add('card__description');
-    description.textContent = `by author ${book.author}, pages ${book.pages}, ${book.read ? 'Read' : 'Not read'}`;
+    description.textContent = `by author ${book.author}, pages ${book.pages}, ${book.readStatus ? 'Read' : 'Not read'}`;
     return description;
   };
 
@@ -92,11 +96,17 @@ function createBookCard(book) {
     return deleteButton;
   }
 
-  /* function createToggleRead(read) {
+  function createToggleButton(book) {
     const toggleButton = document.createElement('button');
-    toggleButton.classList.add('card__toogle-button');
-    toggleButton.
-  }; */
+    toggleButton.classList.add('card__toggle-button');
+    toggleButton.textContent = book.readStatus ? 'Read' : 'Unread';
+  
+    toggleButton.addEventListener('click', () => {
+      book.toggleReadStatus();
+      toggleButton.textContent = book.readStatus ? 'Read' : 'Unread';
+    });
+    return toggleButton;
+  };
 
   const listItem = document.createElement('li');
   listItem.classList.add('book-list__card');
@@ -112,6 +122,9 @@ function createBookCard(book) {
 
   const deleteButton = createDeleteButton(book);
   listItem.appendChild(deleteButton);
+
+  const toggleButton = createToggleButton(book);
+  listItem.appendChild(toggleButton);
 
   return listItem;
 }
@@ -150,12 +163,12 @@ function initializeDialog() {
     const image          = imageInput.value;
     const imageAlt       = imageName.value;
   
-    console.log(`Title: ${title}`);
+    /* console.log(`Title: ${title}`);
     console.log(`Author: ${author}`);
     console.log(`Pages: ${pages}`);
     console.log(`Read: ${read}`);
     console.log(`Image: ${image}`);
-    console.log(`Image Alt: ${imageAlt}`);
+    console.log(`Image Alt: ${imageAlt}`); */
 
     const newBook = new Book(title, author, pages, read, image, imageAlt);
     console.log(newBook);
