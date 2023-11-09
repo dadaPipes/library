@@ -7,10 +7,11 @@ Book.generateUniqueId = (function() {
 })();
 
 
-function Book(title, author, pages, readStatus, imagePath, imageAlt) {
+function Book(title, author, summary, pages, readStatus, imagePath, imageAlt) {
   this.id         = Book.generateUniqueId();
   this.title      = title;
   this.author     = author;
+  this.summary    = summary;
   this.pages      = pages;
   this.readStatus = readStatus;
   this.imagePath  = imagePath;
@@ -22,19 +23,19 @@ Book.prototype.toggleReadStatus = function() {
 };
 
 const myLibrary = [
-  new Book('The Silent Stars Go By',        'Dan Abnett',       256, true,  './images/Silent_Stars_Go_By.jpg', 'Book cover for: The Silent Stars Go By'),
-  new Book('Shada',                         'Gareth Roberts',   416, false, './images/Shada.jpg', 'Book cover for: Shada'),
-  new Book('Touched by an Angel',           'Jonathan Morris',  256, true,  './images/Touched-by-an-Angel.jpg', 'Book cover for: Touched by an Angel'),
-  new Book('The Day of the Doctor',         'Steven Moffat',    384, true,  './images/Day_of_the_Doctor.jpg', 'Book cover for: The Day of the Doctor'),
-  new Book('The Time Traveler\'s Almanac',  'Steve Tribe',      320, false, './images/Time_Travelers_Almanac.jpg', 'Book cover for: The Time Traveler\'s Almanac'),
-  new Book('The Dalek Handbook',            'Steve Tribe',      160, true,  './images/Dalek_Handbook.jpg', 'Book cover for: The Dalek Handbook'),
-  new Book('The Writer\'s Tale',            'Russell T Davies', 736, true,  './images/Writers_Tale.jpg', 'Book cover for: The Writer\'s Tale'),
-  new Book('The Doctor\'s Lives and Times', 'James Goss',       256, false, './images/Doctors_Lives_and_Times.jpg', 'Book cover for: The Doctor\'s Lives and Times'),
-  new Book('The Legends of River Song',     'Jenny T. Colgan',  224, true,  './images/River-Song.jpg', 'Book cover for: The Legends of River Song'),
-  new Book('The Secret Lives of Monsters',  'Justin Richards',  224, true,  './images/Secret_Lives_of_Monsters.jpg', 'Book cover for: The Secret Lives of Monsters'),
-  new Book('The Official Cookbook',         'Joanna Farrow',    160, false, './images/Official_Cookbook.jpg', 'Book cover for: The Official Cookbook'),
-  new Book('The Writer\'s Guide',           'Graeme Burk',      256, true,  './images/Writers_Guide.jpg', 'Book cover for: The Writer\'s Guide')
-  ];
+  new Book('The Silent Stars Go By',        'Dan Abnett',       'Summary for The Silent Stars Go By',        256, true,  './images/Silent_Stars_Go_By.jpg', 'Book cover for: The Silent Stars Go By'),
+  new Book('Shada',                         'Gareth Roberts',   'Summary for Shada',                         416, false, './images/Shada.jpg', 'Book cover for: Shada'),
+  new Book('Touched by an Angel',           'Jonathan Morris',  'Summary for Touched by an Angel',           256, true,  './images/Touched-by-an-Angel.jpg', 'Book cover for: Touched by an Angel'),
+  new Book('The Day of the Doctor',         'Steven Moffat',    'Summary for The Day of the Doctor',         384, true,  './images/Day_of_the_Doctor.jpg', 'Book cover for: The Day of the Doctor'),
+  new Book('The Time Traveler\'s Almanac',  'Steve Tribe',      'Summary for The Time Traveler\'s Almanac',  320, false, './images/Time_Travelers_Almanac.jpg', 'Book cover for: The Time Traveler\'s Almanac'),
+  new Book('The Dalek Handbook',            'Steve Tribe',      'Summary for The Dalek Handbook',            160, true,  './images/Dalek_Handbook.jpg', 'Book cover for: The Dalek Handbook'),
+  new Book('The Writer\'s Tale',            'Russell T Davies', 'Summary for The Writer\'s Tale',            736, true,  './images/Writers_Tale.jpg', 'Book cover for: The Writer\'s Tale'),
+  new Book('The Doctor\'s Lives and Times', 'James Goss',       'Summary for The Doctor\'s Lives and Times', 256, false, './images/Doctors_Lives_and_Times.jpg', 'Book cover for: The Doctor\'s Lives and Times'),
+  new Book('The Legends of River Song',     'Jenny T. Colgan',  'Summary for The Legends of River Song',     224, true,  './images/River-Song.jpg', 'Book cover for: The Legends of River Song'),
+  new Book('The Secret Lives of Monsters',  'Justin Richards',  'Summary for The Secret Lives of Monsters',  224, true,  './images/Secret_Lives_of_Monsters.jpg', 'Book cover for: The Secret Lives of Monsters'),
+  new Book('The Official Cookbook',         'Joanna Farrow',    'Summary for The Official Cookbook',         160, false, './images/Official_Cookbook.jpg', 'Book cover for: The Official Cookbook'),
+  new Book('The Writer\'s Guide',           'Graeme Burk',      'Summary for The Writer\'s Guide',           256, true,  './images/Writers_Guide.jpg', 'Book cover for: The Writer\'s Guide')
+];
 
 function displayBooks(library) {
   const bookList = document.querySelector('.book-list');
@@ -70,12 +71,24 @@ function createBookCard(book) {
     return title;
   };
 
-  function createDescription(book) {
-    const description = document.createElement('div');
-    description.classList.add('card__description');
-    description.textContent = `by author ${book.author}, pages ${book.pages}, ${book.readStatus ? 'Read' : 'Not read'}`;
-    return description;
-  };
+  function createAuthor(book) {
+    const author = document.createElement('p');
+    author.classList.add('card__author');
+    author.textContent = book.author;
+    return author;
+  }
+
+  function createSummary(book) {
+    const summary = document.createElement('p');
+    summary.classList.add('card__summary');
+    summary.textcontent = book.summary;
+    return summary;
+  }
+
+  function createPages(book) {
+    const pages = document.createElement('p');
+    pages.classList.add('card__pages');
+  }
 
   function createDeleteButton(book) {
     const deleteButton = document.createElement('button');
@@ -117,8 +130,14 @@ function createBookCard(book) {
   const title = createTitle(book);
   listItem.appendChild(title);
 
-  const description = createDescription(book);
-  listItem.appendChild(description);
+  const author = createAuthor(book);
+  listItem.appendChild(author);
+
+  const summary = createSummary(book);
+  listItem.appendChild(summary);
+
+  /* const description = createDescription(book);
+  listItem.appendChild(description); */
 
   const deleteButton = createDeleteButton(book);
   listItem.appendChild(deleteButton);
