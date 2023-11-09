@@ -4,17 +4,30 @@
   padding: 0;
 }
 
+button {
+  background-color: #194569;
+  border-style: none;
+  border-radius: 3px;
+}
+
+button,
+.card__content {
+  color: rgb(226, 227, 242);
+}
+
 /* #region Header*/
 
 .nav {
   display: flex;
   justify-content: center;
-  height: 5vw;
-  background-color: rgb(0, 191, 255);
+  align-items: center;
+  height: 80px;
+  background-color: #1E2025;
 }
 
 .nav__add-book {
-  
+  height: 50%;
+  width: 10%;
 }
 
 /* #endregion Header*/
@@ -22,33 +35,68 @@
 /* #region Book-list */
 
 .book-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  padding: 2%;
   list-style: none;
+  background-color: #c5e1f8;
 }
 
-.book-list__card {
-  width: 25%;
-  margin: 10px auto;
-  border: solid black 3px;
+.card {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  height: 200px;
+  width: 100%;
+  padding: 2%;
+  background-color: #83a9c6;
+  border-style: none;
+  border-radius: 3px;
+  /*  box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3); */
 }
 
 .card__image {
-  height: 160px;
-  width: 120px;
+  height: 180px;
+  width: 100%;
+}
+
+.card__content {
+  display: grid;
+  grid-template-rows: 2fr repeat(4, 1fr);
+  align-items: start;
+  padding: 0 5%;
 }
 
 .card__title {
-
+  font-weight: bold;
 }
 
-.card__description {
-
+.card__buttons {
+  display: flex;
+  justify-content: space-between;
 }
 
+.card__delete-button,
+.card__toggle-button {
+  height: 100%;
+  width: 30%;
+  padding: 1.5%;
+}
 
+.card__delete-button {
+  width: 20%;
+}
 
 /* #endregion Book-list */
 
 /* #region Form */
+
+.modal__title,
+.modal__form-field,
+.modal__label,
+.modal__required-fields {
+  color: rgb(226, 227, 242);
+}
 
 .modal {
   display: none;
@@ -67,17 +115,16 @@
 }
 
 .modal__content {
-  background-color: #fff;
+  background-image: url('https://i.pinimg.com/564x/04/06/71/040671822d577328f410ff0a30805d5a.jpg');
+  background-size: cover;
   padding: 20px;
   border-radius: 5px;
 }
 
 .modal__title {
-  margin-top: 0;
-}
-
-.modal__required-fields {
-  
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight:200;
 }
 
 .modal__form {
@@ -86,6 +133,8 @@
 }
 
 .modal__form-field {
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 10px;
 }
 
@@ -94,7 +143,6 @@
 }
 
 .modal__input {
-  padding: 5px;
 }
 
 .modal__checkbox {
@@ -107,12 +155,17 @@
   margin-top: 10px;
 }
 
+.modal__submit-button,
+.modal__cancel-button {
+  padding: 5px;
+}
+
 .modal__submit-button {
-  margin-left: 5px;
+  
 }
 
 .modal__cancel-button {
-  background-color: #ccc;
+  margin-left: 5px;
 }
 
 /* #endregion Form */
